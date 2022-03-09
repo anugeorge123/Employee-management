@@ -1,0 +1,94 @@
+<html>
+<head>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+<form>
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                Employee Code
+            </td>
+            <td>
+                Employee Name
+            </td>
+        </tr>
+        {% for e in employee %}
+        <tr>
+            <td>
+                <input type="employee_code" value="{{e.id}}" >
+            </td>
+            <td>
+                <input type="name" value="{{e.name}}" >
+            </td>
+            <td>
+                <button id="view" data-id="{{e.id}}" class="edit-employee">View</button>
+            </td>
+             <td>
+                <button id="delete" data-id="{{e.id}}" class="delete-employee">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    $(document).on("click","button.edit-employee",function(e){
+        e.preventDefault();
+        var row_id = $(this).data('id');
+        showCreatedEmployee(row_id);
+    });
+
+    function showCreatedEmployee(row_id){
+      $.ajax({
+        url: "/account/employee-details/"+ row_id ,
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+          window.location.replace("/account/employee-details/"+ row_id);
+        },
+        error: function(data){
+        alert("Error");
+        }
+      });
+       return false;
+    }
+
+
+    $(document).on("click","button.delete-employee",function(e){
+        e.preventDefault();
+        var row_id = $(this).data('id');
+        deleteEmployee(row_id);
+    });
+
+    function deleteEmployee(row_id){
+      $.ajax({
+        url: "/account/delete-employee/"+ row_id ,
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+                alert(data);
+                if(data.result == "success"){
+                     toastr.success("Data Deleted Successfully!");
+                }
+                else{
+                      toastr.warning("Error!");
+                }
+        },
+        error: function(data){
+                 toastr.error("Error!");
+        }
+      });
+       return false;
+    }
+</script>
+
+</body>
+</html>

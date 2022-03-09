@@ -1,0 +1,101 @@
+<html>
+<head>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+<form>
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>
+           <h3>Employee Details</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>
+            <input type="text" name="name" value="{{employee.name}}" id="name">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Employee Code
+        </td>
+        <td>
+            <input type="text" name="employee_code" value="{{employee.employee_code}}" id="employee_code">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Phone number
+        </td>
+        <td>
+            <input type="text" name="phone_number" value="{{employee.phone_number}}" id="phone_number">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Email
+        </td>
+        <td>
+            <input type="text" name="email" value="{{employee.email}}" id="email">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Address
+        </td>
+        <td>
+            <input type="text" name="address" value="{{employee.address}}" id="address">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button id="save">Save</button>
+        </td>
+    </tr>
+</table>
+
+</form>
+
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+$("#save").click( function(e){
+alert("ajax");
+e.preventDefault();
+var name= document.getElementById("name").value;
+var employee_code= document.getElementById("employee_code").value;
+var phone_number= document.getElementById("phone_number").value;
+var email= document.getElementById("email").value;
+var address= document.getElementById("address").value;
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+var id= 1
+		$.ajax({
+		   url:"/account/edit-employee/"+id ,
+		   data: {
+		   		   name: name,
+		   		   employee_code: employee_code,
+		   		   phone_number: phone_number,
+		           email : email,
+		           address: address,
+		   },
+		   dataType: 'json',
+		   type: 'post',
+           headers: {'X-CSRFToken': csrftoken},
+		   success: function (data) {
+                 toastr.success("Data Saved Successfully!");
+            },
+            error: function(error){
+               toastr.error("Error!");
+            }
+            });
+        });
+</script>
+</body>
+</html>

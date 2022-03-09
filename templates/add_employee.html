@@ -1,0 +1,146 @@
+<html>
+<head>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+<form id="addEmployeeForm" method="post" action="{% url 'employee:add-employee' %}">
+    {% csrf_token %}
+    <center>
+        <table>
+            <tr>
+                <th>
+                    ADD EMPLOYEE
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Employee Name *
+                </td>
+                <td>
+                    <input type="text" name="name" id="name">
+                </td>
+            </tr>
+             <tr>
+                    <td>
+                        Employee Code *
+                    </td>
+                    <td>
+                        <input type="text" name="employee_code" id="employee_code">
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        Phone number *
+                    </td>
+                    <td>
+                        <input type="text" name="phone_number" id="phone_number">
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        Email *
+                    </td>
+                    <td>
+                        <input type="text" name="email" id="email">
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        Address *
+                    </td>
+                    <td>
+                        <input type="text" name="address" id="address">
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        <button id="add_employee">ADD EMPLOYEE</button>
+                    </td>
+                     <td>
+                        <button id="view">VIEW EMPLOYEE</button>
+                    </td>
+            </tr>
+        </table>
+    </center>
+</form>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+$("#add_employee").click( function(e){
+alert("ajax");
+e.preventDefault();
+var name= document.getElementById("name").value;
+var employee_code= document.getElementById("employee_code").value;
+var phone_number= document.getElementById("phone_number").value;
+var email= document.getElementById("email").value;
+var address= document.getElementById("address").value;
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+		$.ajax({
+		   url:"{% url 'employee:add-employee' %}",
+		   data: {
+		   		   name: name,
+		   		   employee_code: employee_code,
+		   		   phone_number: phone_number,
+		           email : email,
+		           address: address,
+		   },
+		   dataType: 'json',
+		   type: 'post',
+           headers: {'X-CSRFToken': csrftoken},
+		   success: function (response) {
+		        if(response.result == "success"){
+                 toastr.success("Data Saved Successfully!");
+                 }
+                 else if(response.result =="form_error"){
+                    toastr.error("Error!");
+                 }
+
+
+                 else if(response.error.name){
+                 document.getElementById("error_name").innerHTML = response.error.name
+                 }
+                    else if(response.error.email){
+                 document.getElementById("error_email").innerHTML = response.error.email
+                 }
+                    else if(response.error.phone_number){
+                 document.getElementById("error_phone").innerHTML = response.error.phone_number
+                 }
+                    else if(response.error.address){
+                 document.getElementById("error_address").innerHTML = response.error.message
+                 }
+                          else if(response.error.employee_code){
+                 document.getElementById("error_message").innerHTML = response.error.employee_code
+                 }
+            },
+            error: function(error){
+               toastr.error("Error!");
+            }
+            });
+        });
+
+$('#view').click(function() {
+  $.ajax({
+    url: "{% url 'employee:view-employees' %}",
+    cache:'false',
+    dataType: 'text',
+    type:"GET",
+    success: function(data){
+      window.location.replace("{% url 'employee:view-employees' %}");
+    },
+    error: function(data){
+    alert("Error");
+    alert('error; '+ eval(error));
+    }
+  });
+   return false;
+});
+
+
+</script>
+</body>
+</html>

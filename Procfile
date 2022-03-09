@@ -1,0 +1,1 @@
+web: gunicorn employee_management.wsgi --log-file - --preload --workers 1 --log-level debug

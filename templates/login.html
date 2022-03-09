@@ -1,0 +1,30 @@
+<html>
+<head>
+
+</head>
+<body>
+<table>
+    <tr>
+        <td>
+            <h3>Login</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            G-mail Id
+        </td>
+        <td>
+            <input type="text" name="gmail_id">
+        </td>
+        <td>
+            <button id="login">Login</button>
+        </td>
+    </tr>
+    {% load socialaccount %}
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+
+
+
+</table>
+</body>
+</html>
