@@ -111,17 +111,7 @@ SOCIALACCOUNT_PROVIDERS = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'emp',
-#         'USER': 'user',
-#         'PASSWORD': 'passme',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
