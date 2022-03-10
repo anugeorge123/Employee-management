@@ -1,0 +1,109 @@
+<html>
+<head>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+<form id="addEmployeeForm" method="post" action="{% url 'employee:add-employee' %}">
+    {% csrf_token %}
+    <center>
+        <table>
+            <tr>
+                <th>
+                    ADD MARKS
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Student Name *
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" value="{{name}}" readonly>
+                </td>
+                <td>
+                   <div id="error_name" style="color: red"></div>
+                </td>
+            </tr>
+             <tr>
+                    <td>
+                        Registration Number *
+                    </td>
+                    <td>
+                        <input type="text" name="registration_no" id="registration_no" value="{{registration_no}}" readonly>
+                    </td>
+                    <td>
+                        <div id="error_regitration_no" style="color: red"></div>
+                    </td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td>
+                    <select name="subject" id="subject">
+                    {% for i in subject %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Mark
+                </td>
+                <td>
+                    <input type="text" name="mark" id="mark">
+                </td>
+            </tr>
+             <tr>
+                    <td>
+                        <button id="add_marks">ADD MARKS</button>
+                    </td>
+            </tr>
+        </table>
+    </center>
+</form>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+$("#add_marks").click( function(e){
+e.preventDefault();
+var name= document.getElementById("name").value;
+var registration_no= document.getElementById("registration_no").value;
+var subject= document.getElementById("subject").value;
+var mark= document.getElementById("mark").value;
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+		$.ajax({
+		   url:"{% url 'employee:add-marks' %}",
+		   data: {
+		   		   name: name,
+		   		   registration_no: registration_no,
+		           subject : subject,
+		           mark: mark,
+		   },
+		   dataType: 'json',
+		   type: 'post',
+           headers: {'X-CSRFToken': csrftoken},
+		   success: function (response) {
+		        if(response.result == "success"){
+                 toastr.success("Data Saved Successfully!");
+                    setTimeout(function(){
+                    window.location.replace("/add-marks/")
+                    }, 5000)
+
+                 }
+                 else{
+                 alert("error");
+                 }
+
+           },
+            error: function(error){
+               toastr.error("Error!");
+            }
+            });
+        });
+</script>
+</body>
+</html>

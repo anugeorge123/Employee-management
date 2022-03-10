@@ -10,28 +10,39 @@
     <table>
         <tr>
             <td>
-                Employee Code
+              <h3> Employee Code</h3>
             </td>
             <td>
-                Employee Name
+               <h3>Employee Name</h3>
             </td>
         </tr>
-        {% for e in employee %}
+        {% if employee %}
+            {% for e in employee %}
+            <tr>
+                <td>
+                    <input type="employee_code" value="{{e.id}}" >
+                </td>
+                <td>
+                    <input type="name" value="{{e.name}}" >
+                </td>
+                <td>
+                    <button id="view" data-id="{{e.id}}" class="edit-employee">View</button>
+                </td>
+                 <td>
+                    <button id="delete" data-id="{{e.id}}" class="delete-employee">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
         <tr>
             <td>
-                <input type="employee_code" value="{{e.id}}" >
-            </td>
-            <td>
-                <input type="name" value="{{e.name}}" >
-            </td>
-            <td>
-                <button id="view" data-id="{{e.id}}" class="edit-employee">View</button>
-            </td>
-             <td>
-                <button id="delete" data-id="{{e.id}}" class="delete-employee">Delete</button>
+                <h3>No Data! </h3>
             </td>
         </tr>
-        {% endfor %}
+        {% endif %}
+        <tr>
+            <button id="add_new" onclick="addEmployee()">ADD NEW EMPLOYEE</button>
+        </tr>
     </table>
 </form>
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -46,12 +57,12 @@
 
     function showCreatedEmployee(row_id){
       $.ajax({
-        url: "/account/employee-details/"+ row_id ,
+        url: "/employee-details/"+ row_id ,
         cache:'false',
         dataType: 'text',
         type:"GET",
         success: function(data){
-          window.location.replace("/account/employee-details/"+ row_id);
+          window.location.replace("/employee-details/"+ row_id);
         },
         error: function(data){
         alert("Error");
@@ -69,18 +80,12 @@
 
     function deleteEmployee(row_id){
       $.ajax({
-        url: "/account/delete-employee/"+ row_id ,
+        url: "/delete-employee/"+ row_id ,
         cache:'false',
         dataType: 'text',
         type:"GET",
         success: function(data){
-                alert(data);
-                if(data.result == "success"){
-                     toastr.success("Data Deleted Successfully!");
-                }
-                else{
-                      toastr.warning("Error!");
-                }
+            toastr.success("Data Deleted Successfully!");
         },
         error: function(data){
                  toastr.error("Error!");
@@ -88,6 +93,25 @@
       });
        return false;
     }
+
+        function addEmployee(){
+      $.ajax({
+        url: "/add-employee/" ,
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+            window.location.replace('/add-employee/');
+        },
+        error: function(data){
+                 toastr.error("Error!");
+        }
+      });
+       return false;
+    }
+
+
+
 </script>
 
 </body>

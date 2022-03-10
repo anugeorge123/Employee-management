@@ -1,0 +1,122 @@
+<html>
+<head>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+<form id="addEmployeeForm" method="post" action="{% url 'employee:add-employee' %}">
+    {% csrf_token %}
+    <center>
+        <table>
+            <tr>
+                <th>
+                    ADD STUDENT
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Student Name *
+                </td>
+                <td>
+                    <input type="text" name="name" id="name">
+                </td>
+                <td>
+                   <div id="error_name" style="color: red"></div>
+                </td>
+            </tr>
+             <tr>
+                    <td>
+                        Registration Number *
+                    </td>
+                    <td>
+                        <input type="text" name="registration_no" id="registration_no">
+                    </td>
+                    <td>
+                        <div id="error_regitration_no" style="color: red"></div>
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        Department *
+                    </td>
+                    <td>
+                        <input type="text" name="department" id="department">
+                    </td>
+                    <td>
+                        <div id="error_department" style="color: red"></div>
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        Academic year *
+                    </td>
+                    <td>
+                        <input type="text" name="academic_year" id="academic_year">
+                    </td>
+                     <td>
+                        <div id="error_academic_year" style="color: red"></div>
+                    </td>
+            </tr>
+             <tr>
+                    <td>
+                        <button id="add_student">ADD</button>
+                    </td>
+            </tr>
+        </table>
+    </center>
+</form>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+$("#add_student").click( function(e){
+e.preventDefault();
+var name= document.getElementById("name").value;
+var registration_no= document.getElementById("registration_no").value;
+var department= document.getElementById("department").value;
+var academic_year= document.getElementById("academic_year").value;
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+		$.ajax({
+		   url:"{% url 'employee:add-student' %}",
+		   data: {
+		   		   name: name,
+		   		   registration_no: registration_no,
+		           department : department,
+		           academic_year: academic_year,
+		   },
+		   dataType: 'json',
+		   type: 'post',
+           headers: {'X-CSRFToken': csrftoken},
+		   success: function (response) {
+		        if(response.result == "success"){
+                 toastr.success("Data Saved Successfully!");
+                    setTimeout(function(){
+                    window.location.replace("/add-marks?name="+name+"&registration_no="+registration_no);
+                    }, 5000)
+
+                 }
+
+                else if(response.error.name){
+                    document.getElementById("error_name").innerHTML = response.error.name
+                }
+                else if(response.error.regitration_no){
+                    document.getElementById("error_regitration_no").innerHTML = response.error.regitration_no
+                }
+                else if(response.error.department){
+                    document.getElementById("error_department").innerHTML = response.error.department
+                }
+                else if(response.error.email){
+                    document.getElementById("error_academic_year").innerHTML = response.error.academic_year
+                }
+            },
+            error: function(error){
+               toastr.error("Error!");
+            }
+            });
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+<head>
+
+</head>
+<body>
+<form>
+    <table>
+        <tr>
+            <td>
+                <center>
+                    <h1>Welcome to Employee Management</h1>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="login">
+                    Login
+                </button>
+            </td>
+        </tr>
+    </table>
+</form>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src =  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+    $('#login').click(function() {
+    $.ajax({
+        url: "/",
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+          window.location.replace("{% url 'employee:login' %}");
+        },
+        error: function(data){
+        alert("Error");
+        alert('error; '+ eval(error));
+        }
+        });
+        return false;
+    });
+</script>
+
+</body>
+</html>
