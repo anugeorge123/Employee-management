@@ -5,7 +5,6 @@ app_name = 'employee'
 
 urlpatterns = [
     url(r'^$', (views.HomePageView.as_view()), name='home'),
-    # url(r'^signup/$', views.SignupView.as_view(), name="signup"),
     url(r'^login/$', views.LoginView.as_view(), name="login"),
     url(r'^add-employee/$', views.AddEmployeeView.as_view(), name="add-employee"),
     url(r'^view-employees/$', views.EmployeeView.as_view(), name="view-employees"),
