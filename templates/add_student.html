@@ -62,6 +62,9 @@
                     <td>
                         <button id="add_student">ADD</button>
                     </td>
+                    <td>
+                    <button onclick="viewEmployee()">VIEW EMPLOYEE</button>
+                    </td>
             </tr>
         </table>
     </center>
@@ -117,6 +120,23 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             }
             });
         });
+
+
+      function viewEmployee(){
+      $.ajax({
+        url: "/view-employees/" ,
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+            window.location.replace('/view-employees/');
+        },
+        error: function(data){
+                 toastr.error("Error!");
+        }
+      });
+       return false;
+    }
 </script>
 </body>
 </html>

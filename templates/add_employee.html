@@ -76,6 +76,9 @@
                      <td>
                         <button id="view">VIEW EMPLOYEES</button>
                     </td>
+                    <td>
+                    <button id="add_student" onclick="addStudent()">ADD STUDENT</button>
+                    </td>
             </tr>
         </table>
     </center>
@@ -156,7 +159,21 @@ $('#view').click(function() {
    return false;
 });
 
-
+        function addStudent(){
+      $.ajax({
+        url: "/add-student/" ,
+        cache:'false',
+        dataType: 'text',
+        type:"GET",
+        success: function(data){
+            window.location.replace('/add-student/');
+        },
+        error: function(data){
+                 toastr.error("Error!");
+        }
+      });
+       return false;
+    }
 </script>
 </body>
 </html>
