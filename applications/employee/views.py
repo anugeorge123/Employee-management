@@ -183,16 +183,24 @@ class AddMarksView(View):
             subject = self.request.POST.get('subject', None)
             mark = request.POST.get('mark', None)
             stu = StudentProfile.objects.get(regitration_no=registration_no)
+            print("stu",stu)
             try:
-                mark = StudentMark.objects.create(student=stu,subject_name=subject,
-                                                     mark=mark)
+                print("try")
+                # mark = StudentMark.objects.create(student=stu,subject_name=subject,
+                #                                      mark=mark)
+                mark = StudentMark()
+                mark.student = stu.name
+                mark.subject_name = subject
+                mark.mark = mark
+                mark.save()
                 if mark:
+                    print("iff")
                     data['result'] = "success"
-
                 else:
+                    print("else")
                     data['result'] = "Internal Server Error"
-
             except Exception as e:
+                print("except")
                 data['result'] = "error"
         else:
             data['result'] = "form_error"
